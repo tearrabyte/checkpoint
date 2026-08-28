@@ -427,3 +427,14 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# SQLite
+*.db
+*.db-shm
+*.db-wal
+
+# Vite
+frontend/dist/
+
+# Environment Files
+.env.*.local
