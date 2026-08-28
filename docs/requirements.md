@@ -3,7 +3,7 @@
 ## Functional Requirements
 | Number   | Requirement                                                                                                                            |
 | -------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| *FR-01*  | The application shall allow a developer to create a project by providing a project name, description, and game version.                |
+| *FR-01*  | The application shall allow a developer to create a project by providing a project name and description.				                |
 | *FR-02*  | The system shall allow a developer to view and update the information of an existing project.                                          |
 | *FR-03*  | The system shall allow a developer to create a playtest session associated with an existing project, supplying a session name, date, and game version.                                                                                                                                   |
 | *FR-04*  | The application shall allow a developer to view and update the status and details of an existing playtest session.                     |
