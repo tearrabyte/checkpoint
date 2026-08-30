@@ -5,9 +5,10 @@
 
 /* 
  * API BASE URL
- * Uses a relative "/api" path.
+ * Base URL of the ASP.NET Core backend. Hardcoded for local development as this is a locally-hosted prototype with a fixed backend port (see backend/Checkpoint.Api/Properties/launchSettings.json).
+ * A future enhancement would move this to an environment variable or Vite dev-server proxy so the frontend doesn't need to know the backend's address.
  */
-const BASE_URL = "/api";
+const BASE_URL = "http://localhost:5298/api";
 
 /*
  * API ERROR
