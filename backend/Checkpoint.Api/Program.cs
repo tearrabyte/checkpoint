@@ -1,5 +1,6 @@
 using Checkpoint.Api.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
  * SERVICES
  * Registers the services required by the Checkpoint API with the ASP.NET Core dependency injection container.
  */
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 builder.Services.AddDbContext<CheckpointDbContext>(options =>
     options.UseSqlite(
