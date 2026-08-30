@@ -1,0 +1,205 @@
+/*
+ * CHECKPOINT FRONTEND STYLES
+ * Provides the shared styling used across the Checkpoint React frontend.
+ */
+
+ /* 
+  * GLOBAL STYLES
+  * Sets the box model, page spacing, font, and default colours.
+  */
+* { box-sizing: border-box; }
+body {
+	margin: 0;
+	font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+	background: #f4f5f7;
+	color: #1f2430;
+}
+
+.app-header {
+	display: flex;
+	align-items: center;
+	gap: 2rem;
+	padding: 1rem 2rem;
+	background: #1f2430;
+	color: white;
+}
+.app-header .brand { font-weight: 700; font-size: 1.2rem; }
+.app-header nav { display: flex; gap: 1.2rem; }
+.app-header nav a { color: #c7cbd4; text-decoration: none; }
+.app-header nav a.active, .app-header nav a:hover { color: white; }
+
+/*
+ * APPLICATION CONTENT
+ * Centres the main page content and limits the maximum width.
+ */
+.app-content { max-width: 960px; margin: 0 auto; padding: 2rem; }
+
+h1 { margin-top: 0; }
+
+/* 
+ * CARDS
+ * Provides reusable card styling for dashboard sections, forms and project information.
+ */
+.card {
+	background: white;
+	border-radius: 8px;
+	padding: 1.25rem 1.5rem;
+	margin-bottom: 1.5rem;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/*
+ * FORM STYLES
+ * Styling for form labels and input controls.
+ */
+.form-card label {
+	display: block;
+	margin-bottom: 0.9rem;
+	font-weight: 600;
+	font-size: 0.9rem;
+}
+
+.form-card input, .form-card textarea, .form-card select {
+	display: block;
+	width: 100%;
+	margin-top: 0.3rem;
+	padding: 0.5rem 0.6rem;
+	border: 1px solid #d0d3da;
+	border-radius: 6px;
+	font-size: 0.95rem;
+	font-weight: 400;
+}
+.form-card textarea { min-height: 70px; resize: vertical; }
+.form-row { display: flex; gap: 1rem; }
+.form-row label { flex: 1; }
+
+/*
+ * BUTTONS
+ * Reusable styles for primary, secondary, danger and smaller action buttons.
+ */
+.btn {
+	border: none;
+	border-radius: 6px;
+	padding: 0.5rem 1rem;
+	font-size: 0.9rem;
+	cursor: pointer;
+	font-weight: 600;
+}
+.btn-primary { background: #3457d5; color: white; }
+.btn-secondary { background: #e4e6eb; color: #1f2430; text-decoration: none; display: inline-block; }
+.btn-danger { background: #d84343; color: white; }
+.btn-small { padding: 0.3rem 0.6rem; font-size: 0.8rem; }
+
+/*
+ * CARD LAYOUTS
+ * Provides reusable grid and action-row layouts.
+ */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+.card-actions { display: flex; gap: 0.6rem; margin-top: 0.8rem; }
+
+/*
+ * DATA TABLES
+ * Tabular project and feedback data.
+ */
+.data-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; }
+.data-table th, .data-table td { text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid #eee; }
+.data-table th { background: #f0f1f4; font-size: 0.85rem; }
+
+/*
+ * STATUS AND PRIORITY BADGES
+ * Visual indicators for feedback categories, priorities and statuses.
+ */
+.badge {
+	display: inline-block;
+	padding: 0.15rem 0.55rem;
+	border-radius: 999px;
+	background: #e4e6eb;
+	font-size: 0.78rem;
+	font-weight: 600;
+}
+.badge-defect, .badge-category-defect { background: #fbdada; color: #8a1f1f; }
+.badge-critical { background: #fbdada; color: #8a1f1f; }
+.badge-high { background: #fde3c8; color: #8a4d10; }
+.badge-resolved { background: #d6f0d8; color: #1e6b28; }
+.badge-new { background: #dbe6fd; color: #1c3f9c; }
+
+/*
+ * GENERAL TEXT STATES
+ * Secondary and empty-state text styling.
+ */
+.muted { color: #6b7280; }
+.empty-state { color: #8b8999; font-style: italic; }
+
+/*
+ * DASHBOARD STATISTICS
+ * Summary statistic card styling.
+ */
+.stat-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.stat-card { background: white; border-radius: 8px; padding: 1rem; text-align: center; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); }
+.stat-card-highlight { background: #fff4e5; }
+.stat-value { font-size: 1.8rem; font-weight: 700; }
+.stat-label { font-size: 0.8rem; color: #6b7280; }
+
+/* 
+ * DASHBOARD BREAKDOWNS
+ * Layout and styling for category, status, and priority summaries.
+ */
+.breakdown-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.breakdown-card { background: white; border-radius: 8px; padding: 1rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); }
+.breakdown-card ul { list-style: none; padding: 0; margin: 0; }
+.breakdown-card li { display: flex; justify-content: space-between; padding: 0.25rem 0; }
+
+/*
+ * FEEDBACK FILTERS
+ * Layout and styling for feedback filter controls.
+ */
+.filter-bar { display: flex; gap: 1.5rem; margin-bottom: 1.2rem; }
+.filter-bar label { font-size: 0.85rem; font-weight: 600; }
+.filter-bar select { display: block; margin-top: 0.3rem; padding: 0.4rem 0.6rem; border-radius: 6px; border: 1px solid #d0d3da; }
+
+/*
+ * FEEDBACK ITEMS
+ * Styling of expandable feedback summaries, controls and detailed information.
+ */
+.feedback-item { padding: 0; overflow: hidden; }
+.feedback-summary { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 1.2rem; cursor: pointer; }
+.feedback-title { margin-left: 0.6rem; }
+.feedback-controls { display: flex; gap: 0.5rem; align-items: center; }
+.feedback-controls select { padding: 0.3rem; border-radius: 6px; border: 1px solid #d0d3da; }
+.feedback-detail { padding: 0 1.2rem 1rem; border-top: 1px solid #eee; }
+
+/*
+ * DEFECT FEEDBACK
+ * Highlights additional information displayed for defect feedback items.
+ */
+.defect-readout { background: #fafafa; border-radius: 6px; padding: 0.8rem; margin-top: 0.6rem; }
+.defect-readout > div { margin-bottom: 0.5rem; }
+.defect-readout pre { white-space: pre-wrap; font-family: inherit; margin: 0.2rem 0 0; }
+
+.section-hint { font-size: 0.8rem; color: #6b7280; margin-bottom: 0.4rem; }
+.defect-fields { border-left: 3px solid #d84343; padding-left: 1rem; margin-bottom: 1rem; }
+
+/* 
+ * VALIDATION AND ERROR STATES
+ * Styling of validation messages returned by the backend.
+ */
+.field-error { color: #b00020; font-size: 0.8rem; font-weight: 400; margin-top: 0.2rem; }
+.error-text { color: #b00020; }
+
+/* 
+ * NAVIGATION AND DETAIL VIEWS
+ * Styling for back links and detail page headers.
+ */
+.back-link { display: inline-block; margin-bottom: 1rem; color: #3457d5; text-decoration: none; }
+.detail-header { display: flex; justify-content: space-between; align-items: flex-start; }
+
+/*
+ * CONFIRMATION MODAL
+ * Backdrop, dialog and action layout used by ConfirmDialog.
+ */
+.modal-backdrop {
+	position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4);
+	display: flex; align-items: center; justify-content: center;
+}
+.modal { background: white; border-radius: 8px; padding: 1.5rem; max-width: 400px; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 0.6rem; margin-top: 1rem; }
