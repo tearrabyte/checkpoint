@@ -1,11 +1,11 @@
 # Initial Test Cases and Requirements Traceability
 
 ## Purpose
-This document defines the intial test cases for the Checkpoint prototype and provides traceability between functional/non-functional requirements and the planned tests.
+This document defines the test cases used to verify the the Checkpoint application and provides traceability between functional/non-functional requirements and verification activities.
 
-The initial test cases focus on the highest-risk and most important functional workflows of the prototype. They are intended to provide initial coverage as opposed to exhaustive testing of every input or system condition.
+The initial test cases were developed to provide coverage of the highest-risk and most important functional workflows of the prototype. Further test cases are added to provide broader postive, negative, boundary, invalid-input and error-handling coverage.
 
-## Test Cases
+## Initial Test Cases
 
 ### TC-01: Create a valid project (FR-01)
 
@@ -170,9 +170,186 @@ The initial test cases focus on the highest-risk and most important functional w
 
 ---
 
+## Final Test Cases
+
+### TC-09:
+
+**Test objective:**
+
+**Requirement(s):**
+
+**Test type:**
+
+**Preconditions:**
+
+**Steps:**
+1. POST /api/projects with valid Name and Description.
+
+**Test data:**
+
+**Expected result:**
+
+**Actual result:** Not yet executed.
+
+**Status:** Not yet executed.
+
+---
+
+### TC-10:
+
+**Test objective:**
+
+**Requirement(s):**
+
+**Test type:**
+
+**Preconditions:**
+
+**Steps:**
+1. POST /api/projects with valid Name and Description.
+
+**Test data:**
+
+**Expected result:**
+
+**Actual result:** Not yet executed.
+
+**Status:** Not yet executed.
+
+---
+
+### TC-11:
+
+**Test objective:**
+
+**Requirement(s):**
+
+**Test type:**
+
+**Preconditions:**
+
+**Steps:**
+1. POST /api/projects with valid Name and Description.
+
+**Test data:**
+
+**Expected result:**
+
+**Actual result:** Not yet executed.
+
+**Status:** Not yet executed.
+
+---
+
+### TC-12:
+
+**Test objective:**
+
+**Requirement(s):**
+
+**Test type:**
+
+**Preconditions:**
+
+**Steps:**
+1. POST /api/projects with valid Name and Description.
+
+**Test data:**
+
+**Expected result:**
+
+**Actual result:** Not yet executed.
+
+**Status:** Not yet executed.
+
+---
+
+### TC-13:
+
+**Test objective:**
+
+**Requirement(s):**
+
+**Test type:**
+
+**Preconditions:**
+
+**Steps:**
+1. POST /api/projects with valid Name and Description.
+
+**Test data:**
+
+**Expected result:**
+
+**Actual result:** Not yet executed.
+
+**Status:** Not yet executed.
+
+---
+
+### TC-14:
+
+**Test objective:**
+
+**Requirement(s):**
+
+**Test type:**
+
+**Preconditions:**
+
+**Steps:**
+1. POST /api/projects with valid Name and Description.
+
+**Test data:**
+
+**Expected result:**
+
+**Actual result:** Not yet executed.
+
+**Status:** Not yet executed.
+
+---
+
+### TC-15:
+
+**Test objective:**
+
+**Requirement(s):**
+
+**Test type:**
+
+**Preconditions:**
+
+**Steps:**
+1. POST /api/projects with valid Name and Description.
+
+**Test data:**
+
+**Expected result:**
+
+**Actual result:** Not yet executed.
+
+**Status:** Not yet executed.
+
+---
+
+## Test Execution Summary
+| Result | Count |
+| --- | --- |
+| Planned | |
+| Executed | |
+| Passed | |
+| Failed | |
+| Blocked | |
+| Not Run | |
+
+## Failed Test Investigation
+| Test Case | Defect ID | Failure | Corrective Action | Regression Result |
+| --- | --- | --- | --- | --- |
+
 ## Requirements Traceability Matrix
 
-| Requirement | Description | Test Case(s) |
+| Requirement | Description | Test Case(s) | Verification Activity | Result |
 |---|---|---|
 | FR-01 | Create project | TC-01, TC-02 |
 | FR-02 | View/update project | *(exercised informally during system testing)* |
@@ -189,8 +366,12 @@ The initial test cases focus on the highest-risk and most important functional w
 | FR-13 | Delete with cascade | TC-08 |
 | NFR-07 | Input validation/sanitisation | TC-02, TC-06 |
 
+## Regression Testing
+| Change / Defect | Test Case(s) | Regression Result |
+|---|---|---|
+
+## Remaining Quality Risks
+
+## Traceability Notes
 Traceability supports quality assurance and change management by providing a clear mapping of requirements to test cases. This provides developers with an overview of requirement coverage, enabling the identification of coverage gaps and the introduction of new test cases.
 Change management is also supported by the traceability matrix, as it allows developers to track which test cases will need to be updated if a requirement change is undertaken.
-
-For example, within Checkpoints traceability matrix, FR-02 and FR-10-12 are flagged as informally tested and identified as candidates for formal test cases in the next test phase.
-Similarly, when GameVersion was removed from Project during development, the traceability matrix could have helped identify exactly which test cases needed review, rather than requiring a full re-test of the entire system.
