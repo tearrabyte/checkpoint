@@ -5,6 +5,20 @@
 
  import { NavLink, Outlet } from "react-router-dom";
 
+ /* 
+  * BRAND MARK
+  * Draws an inline Checkpoint logo mark for visual identity.
+  */
+ function BrandMark() {
+	return (
+		<span className="brand-mark" aria-hidden="true">
+			<svg viewBox="0 0 24 24" fill="none" stroke="#ffff" strokeWidth="2.6" strokeLinecap="round" strokeLineJoin="round">
+				<path d="M20 6 9 17l-5-5" />
+			</svg>
+		</span>
+	);
+ }
+
  /*
   * APPLICATION LAYOUT
   * Displays the Checkpoint header and navigation.
@@ -13,9 +27,16 @@
 export function Layout() {
 	return (
 		<div className="app-shell">
+			{/* Lets keyboard users jump straight to the page content as an accessibility feature. */}
+			<a className="visually-hidden" href="#main">Skip to content</a>
+
 			<header className="app-header">
-				<div className="brand">Checkpoint</div>
-				<nav>
+				<div className="brand">
+					<Brandmark />
+					Checkpoint
+				</div>
+
+				<nav aria-label="Main">
 					<NavLink to="/" end className={({ isActive }) => (isActive ? "active" : "")}>
 						Dashboard
 					</NavLink>
@@ -27,7 +48,8 @@ export function Layout() {
 					</NavLink>
 				</nav>
 			</header>
-			<main className="app-content">
+
+			<main className="app-content" id="main">
 				<Outlet />
 			</main>
 		</div>
