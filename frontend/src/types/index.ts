@@ -1,5 +1,5 @@
 /*
- * API TYPES
+ * SHARED TYPES
  * Defines the TypeScript types used by the React frontend to represent data received from and sent to the Checkpoint ASP.NET Core API.
  * These types match the public API DTOs and enum values used by the backend.
  */
@@ -183,6 +183,11 @@ export interface FeedbackUpdateInput
  * DASHBOARD SUMMARY
  * Represents the information returned by the dashboard API.
  */
+export interface SessionTrendPoint {
+	label: string;
+	count: number;
+}
+
 export interface DashboardSummary {
 	totalProjects: number;
 	totalPlaytestSessions: number;
@@ -191,6 +196,7 @@ export interface DashboardSummary {
 	feedbackByStatus: Record<string, number>;
 	feedbackByPriority: Record<string, number>;
 	openCriticalOrHighCount: number;
+	sessionsPerMonth: SessionTrendPoint[];
 
 	recentPlaytestSessions: {
 		id: number;

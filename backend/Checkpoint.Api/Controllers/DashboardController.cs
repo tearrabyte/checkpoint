@@ -21,6 +21,12 @@ public class DashboardController : ControllerBase
         _db = db;
     }
 
+    /* 
+     * SESSION TREND CHART 
+     * Number of months to include in the trend chart. Default is 6 months.
+     */
+    private const int TrendMonths = 6;
+
     /*
      * GET DASHBOARD SUMMARY
      * Returns dashboard information calculated from the current database records.
@@ -32,38 +38,55 @@ public class DashboardController : ControllerBase
         var totalPlaytestSessions = await _db.PlaytestSessions.CountAsync();
         var totalFeedbackItems = await _db.FeedbackItems.CountAsync();
 
-        var feedbackByCategory = await _db.FeedbackItems
+        /*
+         * FEEDBACK BREAKDOWNS
+         * Counts of feedback items grouped by category, status, and priority.
+         */
+        var categoryCounts = await _db.FeedbackItems
             .GroupBy(f => f.Category)
-            .Select(g => new
-            {
-                Category = g.Key.ToString(),
-                Count = g.Count()
-            })
-            .ToDictionaryAsync(x => x.Category, x => x.Count);
+            .Select(g => new { Key = g.Key, Count = g.Count() })
+            .ToListAsync();
 
-        var feedbackByStatus = await _db.FeedbackItems
+        var statusCounts = await _db.FeedbackItems
             .GroupBy(f => f.Status)
-            .Select(g => new
-            {
-                Status = g.Key.ToString(),
-                Count = g.Count()
-            })
-            .ToDictionaryAsync(x => x.Status, x => x.Count);
+            .Select(g => new { Key = g.Key, Count = g.Count() })
+            .ToListAsync();
 
-        var feedbackByPriority = await _db.FeedbackItems
+        var feedbackCounts = await _db.FeedbackItems
             .GroupBy(f => f.Priority)
-            .Select(g => new
-            {
-                Priority = g.Key.ToString(),
-                Count = g.Count()
-            })
-            .ToDictionaryAsync(x => x.Priority, x => x.Count);
+            .Select(g => new { Key = g.Key, Count = g.Count() })
+            .ToListAsync();
+
+        var feedbackByCategory = categoryCounts.ToDictionary(x => x.Key.ToString(), x => x.Count);
+        var feedbackByStatus = statusCounts.ToDictionary(x => x.Key.ToString(), x => x.Count);
+        var feedbackByPriority = feedbackCounts.ToDictionary(x => x.Key.ToString(), x => x.Count);
 
         var openCriticalOrHighCount = await _db.FeedbackItems
             .CountAsync(f =>
                 f.Status != FeedbackStatus.Resolved &&
                 f.Status != FeedbackStatus.Rejected &&
                 (f.Priority == FeedbackPriority.Critical || f.Priority == FeedbackPriority.High));
+
+        /*
+         * SESSION TREND DATA
+         * Reads the session dates from the database and groups them by month.
+         */
+        var windowStart = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1)
+            .AddMonths(-(TrendMonths - 1));
+
+        var sessionDates = await _db.PlaytestSessions
+            .Where(s => s.SessionDate >= windowStart)
+            .Select(s => s.SessionDate)
+            .ToListAsync();
+
+        var sessionsPerMonth = Enumerable.Range(0, TrendMonths)
+            .Select(offset => windowStart.AddMonths(offset))
+            .Select(month => new SessionTrendPointDto
+            {
+                Label = month.ToString("MMM yyyy"),
+                Countdown = sessionDates.Count(d => d.Year == month.Year && d.Month == month.Month)
+            })
+            .ToList();
 
         var recentPlaytestSessions = await _db.PlaytestSessions
             .OrderByDescending(s => s.SessionDate)
@@ -89,6 +112,7 @@ public class DashboardController : ControllerBase
             FeedbackByStatus = feedbackByStatus,
             FeedbackByPriority = feedbackByPriority,
             OpenCriticalOrHighCount = openCriticalOrHighCount,
+            SessionsPerMonth = sessionsPerMonth,
             RecentPlaytestSessions = recentPlaytestSessions
         };
 

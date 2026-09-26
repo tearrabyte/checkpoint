@@ -23,7 +23,23 @@ public class DashboardSummaryDto
     public Dictionary<string, int> FeedbackByPriority { get; set; } = new();
 
     public int OpenCriticalOrHighCount { get; set; }
+
+    /* 
+     * SESSION TREND DATA
+     * Playtest session counts grouped by month for the dashboard trend chart.
+     */
+    public List<SessionTrendPointDto> SessionsPerMonth { get; set; } = new();
     public List<RecentPlaytestSessionDto> RecentPlaytestSessions { get; set; } = new();
+}
+
+/*
+ * SESSION TREND POINT DTO
+ * Singular month in the playtest session trend chart. Includes a month display label and session count.
+ */
+public class SessionTrendPointDto
+{
+    public string Label { get; set; } = string.Empty;
+    public int Count { get; set; }
 }
 
 /*
