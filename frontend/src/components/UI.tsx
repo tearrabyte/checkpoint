@@ -9,7 +9,7 @@ import type { ReactNode } from "react";
  * SKELETON
  * Placeholder shown when data is loading, roughly sized to match the content to avoid jumping.
  */
-export function Skeleton({ width = 100%, height = 14 }: { width?: string; height?: number }) {
+export function Skeleton({ width = "100%", height = 14 }: { width?: string; height?: number }) {
     return <div className="skeleton skeleton-row" style={{ width, height }} aria-hidden="true" />;
 }
 

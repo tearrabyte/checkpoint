@@ -12,7 +12,7 @@
  function BrandMark() {
 	return (
 		<span className="brand-mark" aria-hidden="true">
-			<svg viewBox="0 0 24 24" fill="none" stroke="#ffff" strokeWidth="2.6" strokeLinecap="round" strokeLineJoin="round">
+			<svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
 				<path d="M20 6 9 17l-5-5" />
 			</svg>
 		</span>
@@ -32,7 +32,7 @@ export function Layout() {
 
 			<header className="app-header">
 				<div className="brand">
-					<Brandmark />
+					<BrandMark />
 					Checkpoint
 				</div>
 

@@ -84,7 +84,7 @@ public class DashboardController : ControllerBase
             .Select(month => new SessionTrendPointDto
             {
                 Label = month.ToString("MMM yyyy"),
-                Countdown = sessionDates.Count(d => d.Year == month.Year && d.Month == month.Month)
+                Count = sessionDates.Count(d => d.Year == month.Year && d.Month == month.Month)
             })
             .ToList();
 
