@@ -44,7 +44,7 @@ const PRIORITY_COLOURS: Record<string, string> = {
 const READABLE: Record<string, string> = {
 	InProgress: "In Progress",
 	FeatureRequest: "Feature Request",
-}
+};
 
 /*
  * TO CHART DATA
@@ -183,6 +183,11 @@ export function DashboardPage() {
 					<div className="chart-card">
 						<h3>Feedback by Category</h3>
 						<DonutChart data={categoryData} total={summary.totalFeedbackItems} />
+					</div>
+
+					<div className="chart-card">
+						<h3>Feedback by Status</h3>
+						<DonutChart data={statusData} total={summary.totalFeedbackItems} />
 					</div>
 
 					<div className="chart-card">
