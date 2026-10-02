@@ -1,22 +1,15 @@
 /*
  * PROJECTS PAGE
- * Displays all Checkpoint projects and enables creation and deletion of projects.
+ * Lists all Checkpoint projects and provides creation, searching and deletion of projects.
  */
 
-import { useEffect, useState } from "react";
-import type { FormEvent } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { projectsApi } from "../api/checkpointApi";
-import { ApiError } from "../api/client";
 import { ConfirmDialog } from "../components/ConfirmDialog";
-import { FieldError } from "../components/FieldError";
+import { ProjectFormModal } from "../components/ProjectFormModal";
+import { EmptyState, SearchField, SkeletonBlock } from "../components/UI";
 import type { Project } from "../types";
-
-/*
- * EMPTY PROJECT FORM
- * Provides the initial values to create a new project.
-*/
-const emptyForm = { name: "", description: "", };
 
 /*
  * PROJECTS PAGE
@@ -25,9 +18,8 @@ const emptyForm = { name: "", description: "", };
 export function ProjectsPage() {
 	const [projects, setProjects] = useState<Project[]>([]);
 	const [loading, setLoading] = useState(true);
-	const [form, setForm] = useState(emptyForm);
-	const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>();
-	const [submitting, setSubmitting] = useState(false);
+	const [search, setSearch] = useState("");
+	const [formOpen, setFormOpen] = useState(false);
 	const [deleteTarget, setDeleteTarget] = useState<Project | null>(null);
 
 /*
@@ -42,28 +34,18 @@ function load() {
 useEffect(load, []);
 
 /*
- * CREATE PROJECT
- * Submits the project form to the backend and reloads the project list.
+ * VISIBLE PROJECTS
+ * Allows for searching applied in the browser
  */
-async function handleCreate(e: FormEvent) {
-	e.preventDefault();
-	setFieldErrors(undefined);
-	setSubmitting(true);
-	try {
-		await projectsApi.create(form);
-		setForm(emptyForm);
-		load();
-	} catch (err) {
-		if (err instanceof ApiError) setFieldErrors(err.fieldErrors);
-	} finally {
-		setSubmitting(false);
-	}
-}
+const visible = useMemo(() => {
+	const term = search.trim().toLowerCase();
+	if (!term) return projects;
 
-/*
- * DELETE PROJECT
- * Deletes the project in the confirmation dialog and returns the project list.
- */
+	return projects.filter(
+		(p) => p.name.toLowerCase().includes(term) || p.description.toLowerCase().includes(term)
+	);
+}, [projects, search]);
+
 async function handleDeleteOnConfirmed() {
 	if (!deleteTarget) return;
 	await projectsApi.remove(deleteTarget.id);
@@ -73,52 +55,75 @@ async function handleDeleteOnConfirmed() {
 
 return (
 	<div>
-		<h1>Projects</h1>
-
-		{/* Project creation form */}
-		<form className="card form-card" onSubmit={handleCreate}>
-			<h2>New Project</h2>
-			<label>
-				Project name
-				<input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="e.g. Bamboozled!" />
-				<FieldError errors={fieldErrors} field="Name" />
-			</label>
-			<label>
-				Description
-				<textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value})} placeholder="A short summary of the game." />
-				<FieldError errors={fieldErrors} field="Description" />
-			</label>
-			<button className="btn btn-primary" type="submit" disabled={submitting}>
-				{submitting ? "Creating..." : "Create Project"}
+		<div className="page-head">
+			<div>
+				<h1>Projects</h1>
+				<p>Each project holds its own playtest sessions and feedback.</p>
+			</div>				
+			<button type="button" className="btn btn-primary" onClick={() => setFormOpen(true)}>
+				New Project
 			</button>
-		</form>
+		</div>
 
-		<h2>Existing Projects</h2>
+		{projects.length > 0 && (
+			<div className="toolbar">
+				<SearchField
+					value={search}
+					onChange={setSearch}
+					placeholder="Search projects by name or description"
+					label="Search Projects"
+				/>
+				<span className="result-count" role="status">
+					{visible.length === projects.length
+						? `${projects.length} ${projects.length === 1 ? "project" : "projects"}`
+						: `${visible.length} of ${projects.length} projects`}
+				</span>
+			</div>
+		)}		
+
 		{loading ? (
-			<p> Loading...</p>
+			<SkeletonBlock rows={4} />
 		) : projects.length === 0 ? (
-			<p className="empty-state">No projects yet. Create your first one above.</p>
+			<EmptyState title="No projects yet.">
+				Create your first project to start recording playtest sessions and feedback.
+			</EmptyState>
+		) : visible.length === 0 ? (
+			<EmptyState title="No projects match your search">
+				Try a different name, or clear the search box.
+			</EmptyState>
 		) : (
 			<div className="card-grid">
 				{projects.map((p) => (
-					<div className="card project-card" key={p.id}>
+					<article className="card project-card" key={p.id}>
 						<h3><Link to={`/projects/${p.id}`}>{p.name}</Link></h3>
-						<p className="muted">{p.description || "No description provided."}</p>
-						<span className="muted">{p.sessionCount} session{p.sessionCount === 1 ? "" : "s"}</span>
-						<div className="card-actions">
-							<Link className="btn btn-secondary" to={`/projects/${p.id}`}>Open</Link>
-							<button className="btn btn-danger" onClick={() => setDeleteTarget(p)}>Delete</button>
+						<p className="muted" style={{ fontSize: "0.88rem", lineHeight: 1.55 }}>
+							{p.description || "No description provided."}
+						</p>
+						<div className="project-meta">
+							<span>{p.sessionCount} {p.sessionCount === 1 ? "session" : "sessions"}</span>
 						</div>
-					</div>
+						<div className="card-actions">
+							<Link className="btn btn-secondary btn-small" to={`/projects/${p.id}`}>Open</Link>
+							<button 
+								type="button"
+								className="btn btn-danger btn-small" 
+								onClick={() => setDeleteTarget(p)}
+							>
+								Delete
+							</button>
+						</div>
+					</article>
 				))}
 			</div>
 		)}
 
+		<ProjectFormModal open={formOpen} onClose={() => setFormOpen(false)} onSaved={load} />
+		
 		{/* Shared confirmation dialog for project deletion */}
 		<ConfirmDialog
 			open={deleteTarget !== null}
-			title="Delete the project?"
-			message={`This will permanently delete "${deleteTarget?.name}" and all of its playtest sessions and feedback. This cannot be undone`}
+			title="Delete this project?"
+			message={`"${deleteTarget?.name}" will be permanently deleted, along with all of its playtest sessions and feedback. This cannot be undone.`}
 			onConfirm={handleDeleteOnConfirmed}
 			onCancel={() => setDeleteTarget(null)}
 			/>
