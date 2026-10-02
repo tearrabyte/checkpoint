@@ -73,20 +73,40 @@ export function DashboardPage() {
 	 * LOAD DASHBOARD
 	 * Request the current dashboard summary from Checkpoint's backend.
 	 */
-	useEffect(() => {
+	function load() {
+		setLoading(true);
+		setError(null);
+
 		dashboardApi
 			.getSummary()
 			.then(setSummary)
-			.catch((e) => setError(e.message))
+			.catch((err) => {
+				setSummary(null);
+				setError(err instanceof Error
+					? err.message
+					: "Could not load dashboard. Check your connection and try again."
+				);
+			})
 			.finally(() => setLoading(false));
-	}, []);
+	}
+
+	useEffect(load, []);
 
 	/* 
 	 * LOADING AND ERROR STATES
 	 * Displays feedback while the dashboard data is being retrieved.
 	 */
 	if (loading) return <SkeletonBlock rows={5} />;
-	if (error) return <p className="error-text">Could not load dashboard: {error}</p>;
+	if (error) {
+		return (
+			<p className="error-text" role="alert">
+				Could not load dashboard: {error}{" "}
+				<button type="button" className="btn btn-ghost btn-small" onClick={load}>
+					Retry
+				</button>
+			</p>
+		);
+	}
 	if (!summary) return null;
 
 	const categoryData = toChartData(summary.feedbackByCategory, CATEGORY_COLOURS, [

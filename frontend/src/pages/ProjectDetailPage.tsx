@@ -7,6 +7,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { projectsApi, sessionsApi } from "../api/checkpointApi";
+import { ApiError } from "../api/client";
 import { Badge } from "../components/Badge";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { ProjectFormModal } from "../components/ProjectFormModal";
@@ -38,6 +39,8 @@ export function ProjectDetailPage() {
 	const [editingSession, setEditingSession] = useState<PlaytestSession | null>(null);
 	
 	const [deleteTarget, setDeleteTarget] = useState<PlaytestSession | null>(null);
+	const [actionError, setActionError] = useState<string | null>(null);
+	const [loadError, setLoadError] = useState<string | null>(null);
 
 	/*
 	 * LOAD PROJECT / SESSIONS
@@ -45,12 +48,14 @@ export function ProjectDetailPage() {
 	*/
 	function loadAll() {
 		setLoading(true);
+		setLoadError(null);
 
 		Promise.all([projectsApi.getById(id), sessionsApi.getAll(id)])
 			.then(([loadedProject, loadedSessions]) => {
 			setProject(loadedProject);
 			setSessions(loadedSessions);
 		})
+		.catch(() => setLoadError("Could not load this project. It may have been deleted, or there was a connection problem."))
 		.finally(() => setLoading(false));
 	}
 
@@ -74,17 +79,36 @@ export function ProjectDetailPage() {
 
 	async function handleDeleteSession() {
 		if (!deleteTarget) return;
-		await sessionsApi.remove(id, deleteTarget.id);
-		setDeleteTarget(null);
-		loadAll();
+
+		try {
+			await sessionsApi.remove(id, deleteTarget.id);
+			setDeleteTarget(null);
+			loadAll();
+		} catch (err) {
+			const message = err instanceof ApiError ? err.message : "An unexpected error occurred.";
+			setActionError(`Could not delete "${deleteTarget.name}". ${message}`);
+		}
 	}
 
 	if (loading) return <SkeletonBlock rows={5} />;
+	if (loadError) {
+		return (
+			<p className="error-text" role="alert">
+				{loadError} <button type="button" className="btn btn-ghost btn-small" onClick={loadAll}>Retry</button>
+			</p>
+		);
+	}
 	if (!project) return <p className="error-text">This project could not be found.</p>
 
 	return (
 		<div>
 			<Link to="/projects" className="back-link">&larr; All Projects</Link>
+
+			{actionError && (
+				<p className="error-text" role="alert" style={{ marginBottom: "1rem" }}>
+					{actionError}
+				</p>
+			)}
 
 			<div className="card-panel">
 				<div className="detail-header">
@@ -143,7 +167,7 @@ export function ProjectDetailPage() {
 											<button
 												type="button"
 												className="btn btn-danger btn-small"
-												onClick={() => setDeleteTarget(s)}
+												onClick={() => { setActionError(null); setDeleteTarget(s); }}
 											>
 												Delete
 											</button>

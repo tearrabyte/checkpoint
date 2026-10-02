@@ -47,6 +47,7 @@ const READABLE: Record<string, string> = { InProgress: "In Progress" };
 export function SessionFormModal({ open, projectId, session, onClose, onSaved }: SessionFormModalProps) {
 	const [form, setForm] = useState(EMPTY_FORM);
 	const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>();
+	const [formError, setFormError] = useState<string | null>(null);
 	const [saving, setSaving] = useState(false);
 
 	const isEditing = Boolean(session);
@@ -71,6 +72,7 @@ export function SessionFormModal({ open, projectId, session, onClose, onSaved }:
 		}
 
 		setFieldErrors(undefined);
+		setFormError(null);
 	}, [open, session]);
 
 	const invalid = (field: string) => (fieldErrors?.[field] ? "input-invalid" : "");
@@ -78,6 +80,7 @@ export function SessionFormModal({ open, projectId, session, onClose, onSaved }:
 	async function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 		setFieldErrors(undefined);
+		setFormError(null);
 		setSaving(true);
 
 		try {
@@ -91,7 +94,13 @@ export function SessionFormModal({ open, projectId, session, onClose, onSaved }:
 			onSaved();
 			onClose();
 		} catch (err) {
-			if (err instanceof ApiError) setFieldErrors(err.fieldErrors);
+			if (err instanceof ApiError && err.fieldErrors) {
+				setFieldErrors(err.fieldErrors);
+			} else if (err instanceof ApiError) {
+				setFormError(err.message);
+			} else {
+				setFormError("An unexpected error occurred. Please try again.");
+			}
 		} finally {
 			setSaving(false);
 		}
@@ -109,7 +118,7 @@ export function SessionFormModal({ open, projectId, session, onClose, onSaved }:
 			onClose={onClose}
 			footer={
 				<>
-					<button type="button" className="btn btn-secondary" onClick={onClose}>
+					<button type="button" className="btn btn-secondary" disabled={saving} onClick={onClose}>
 						Cancel
 					</button>
 					<button type="submit" form="session-form" className="btn btn-primary" disabled={saving}>
@@ -119,6 +128,12 @@ export function SessionFormModal({ open, projectId, session, onClose, onSaved }:
 			}
 		>
 			<form id="session-form" className="form-card" onSubmit={handleSubmit}>
+				{formError && (
+					<div className="form-alert" role="alert">
+						<span>{formError}</span>
+					</div>
+				)}
+				
 				<label>
 					Session Name
 					<input

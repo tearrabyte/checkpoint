@@ -31,6 +31,7 @@ export function SessionDetailPage() {
 	const [deleteTarget, setDeleteTarget] = useState<Feedback | null>(null);
 	const [expandedId, setExpandedId] = useState<number | null>(null);
 	const [actionError, setActionError] = useState<string | null>(null);
+	const [loadError, setLoadError] = useState<string | null>(null);
 
 	/*
 	 * LOAD SESSION AND FEEDBACK
@@ -38,12 +39,14 @@ export function SessionDetailPage() {
 	 */
 	function loadAll() {
 		setLoading(true);
+		setLoadError(null);
 
 		Promise.all([sessionsApi.getById(pId, sId), feedbackApi.getForSession(pId, sId)])
 			.then(([loadedSession, loadedFeedback]) => {
 				setSession(loadedSession);
 				setItems(loadedFeedback);
 			})
+			.catch(() => setLoadError("Could not load this session. It may have been deleted, or there was a connection problem."))
 			.finally(() => setLoading(false));
 	}
 
@@ -70,10 +73,12 @@ export function SessionDetailPage() {
 			});
 			loadAll();
 		} catch (err) {
-			if (err instanceof ApiError) {
-				const detail = err.fieldErrors
+			const detail = err instanceof ApiError 
+				? err.fieldErrors 
 					? Object.values(err.fieldErrors).flat().join(" ")
 					: err.message;
+				: "An unexpected error occurred.";
+				
 				setActionError(`Could not update "${item.title}". ${detail}`);
 			}
 		}
@@ -93,13 +98,19 @@ export function SessionDetailPage() {
 			setDeleteTarget(null);
 			loadAll();
 		} catch (err) {
-			if (err instanceof ApiError) {
-				setActionError(`Could not delete "${deleteTarget.title}". ${err.message}`);
-			}
+			const message = err instanceof ApiError ? err.message : "An unexpected error occurred.";
+			setActionError(`Could not delete "${deleteTarget.name}". ${message}`);
 		}
 	}
 
 	if (loading) return <SkeletonBlock rows={5} />;
+	if (loadError) {
+		return (
+			<p className="error-text" role="alert">
+				{loadError} <button type="button" className="btn btn-ghost btn-small" onClick={loadAll}>Retry</button>
+			</p>
+		);
+	}
 	if (!session) return <p className="error-text">This playtest session could not be found.</p>;
 
 	return (

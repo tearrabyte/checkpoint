@@ -19,7 +19,7 @@ import {
  * EMPTY FEEDBACK FORM
  * The initial values used when submitting a new feedback item.
  */
-const emptyForm = {
+const EMPTY_FORM = {
 	title: "", description: "", submittedBy: "",
 	category: "Gameplay" as FeedbackCategory,
 	priority: "Medium" as FeedbackPriority,
@@ -49,6 +49,7 @@ interface FeedbackFormModalProps {
 export function FeedbackFormModal({ open, projectId, sessionId, onClose, onSubmitted }: FeedbackFormModalProps) {
     const [form, setForm] = useState(EMPTY_FORM);
     const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>();
+	const [formError, setFormError] = useState<string | null>(null);
     const [submitting, setSubmitting] = useState(false);
 
     const isDefect = form.category === "Defect";
@@ -58,6 +59,7 @@ export function FeedbackFormModal({ open, projectId, sessionId, onClose, onSubmi
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
         setFieldErrors(undefined);
+		setFormError(null);
         setSubmitting(true);
 
         try {
@@ -66,7 +68,13 @@ export function FeedbackFormModal({ open, projectId, sessionId, onClose, onSubmi
             onSubmitted();
             onClose();
         } catch (err) {
-            if (err instanceof ApiError) setFieldErrors(err.fieldErrors);
+            if (err instanceof ApiError && err.fieldErrors) {
+				setFieldErrors(err.fieldErrors);
+			} else if (err instanceof ApiError) {
+				setFormError(err.message);
+			} else {
+				setFormError("An unexpected error occurred. Please try again.");
+			}
         } finally {
             setSubmitting(false);
         }
@@ -75,7 +83,8 @@ export function FeedbackFormModal({ open, projectId, sessionId, onClose, onSubmi
     function handleClose() {
         setForm(EMPTY_FORM);
         setFieldErrors(undefined);
-        onClose();
+        setFormError(null);
+		onClose();
     }
 
     const defectErrorCount = ["ExpectedBehaviour", "ActualBehaviour", "ReproductionSteps", "Environment"]
@@ -90,7 +99,7 @@ export function FeedbackFormModal({ open, projectId, sessionId, onClose, onSubmi
             onClose={handleClose}
             footer={
                 <>
-					<button type="button" className="btn btn-secondary" onClick={handleClose}>
+					<button type="button" className="btn btn-secondary" disabled={submitting} onClick={handleClose}>
 						Cancel
 					</button>
 					<button type="submit" form="feedback-form" className="btn btn-primary" disabled={submitting}>
@@ -100,6 +109,12 @@ export function FeedbackFormModal({ open, projectId, sessionId, onClose, onSubmi
             }
         >
             <form id="feedback-form" className="form-card" onSubmit={handleSubmit}>
+				{formError && (
+					<div className="form-alert" role="alert">
+						<span>{formError}</span>
+					</div>
+				)}
+				
 				{defectErrorCount > 0 && (
 					<div className="form-alert" role="alert">
 						<span>

@@ -41,13 +41,15 @@ export function AllFeedbackPage() {
 	const [loading, setLoading] = useState(true);
 	const [filters, setFilters] = useState<FeedbackFilters>(NO_FILTERS);
 	const [search, setSearch] = useState("");
+	const [loadError, setLoadError] = useState<string | null>(null);
 
 	/*
 	 * LOAD FEEDBACK
 	 * Retrieves feedback using the currently selected filters.
 	 */
-	useEffect(() => {
+	function load() {
 		 setLoading(true);
+		 setLoadError(null);
 
 		 feedbackApi
 			.search({
@@ -56,9 +58,11 @@ export function AllFeedbackPage() {
 				category: filters.category || undefined,
 			})
 			.then(setItems)
-			.catch(() => setItems([]))
+			.catch(() => { setItems([]); setLoadError("Could not load feedback. Check your connection and try again."))
 			.finally(() => setLoading(false));
-	}, [filters.status, filters.priority, filters.category]);
+	}
+	
+	useEffect(load, [filters.status, filters.priority, filters.category]);
 
 	/*
 	 * FILTER CHANGES
@@ -167,7 +171,14 @@ export function AllFeedbackPage() {
 			 * FEEDBACK RESULTS
 			 * Displays a loading message, empty state, or the filtered feedback results.
 			 */}
-			{loading ? (
+			{loadError ? (
+				<p className="error-text" role="alert">
+					{loadError}{" "}
+					<button type="button" className="btn btn-ghost btn-small" onClick={load}>
+						Retry
+					</button>
+				</p>
+			) : loading ? (
 				<SkeletonBlock rows={5} />
 			) : visible.length === 0 ? (
 				<EmptyState title="No feedback matches these filters.">

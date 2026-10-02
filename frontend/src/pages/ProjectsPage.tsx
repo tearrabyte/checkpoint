@@ -6,6 +6,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { projectsApi } from "../api/checkpointApi";
+import { ApiError } from "../api/client";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { ProjectFormModal } from "../components/ProjectFormModal";
 import { EmptyState, SearchField, SkeletonBlock } from "../components/UI";
@@ -21,6 +22,8 @@ export function ProjectsPage() {
 	const [search, setSearch] = useState("");
 	const [formOpen, setFormOpen] = useState(false);
 	const [deleteTarget, setDeleteTarget] = useState<Project | null>(null);
+	const [actionError, setActionError] = useState<string | null>(null);
+	const [loadError, setLoadError] = useState<string | null>(null);
 
 /*
  * LOAD PROJECTS
@@ -28,14 +31,18 @@ export function ProjectsPage() {
  */
 function load() {
 	setLoading(true);
-	projectsApi.getAll().then(setProjects).finally(() => setLoading(false));
+	setLoadError(null);
+	projectsApi.getAll()
+		.then(setProjects)
+		.catch(() => setLoadError("Could not load projects. Check your connection and try again."))
+		.finally(() => setLoading(false));
 }
 
 useEffect(load, []);
 
 /*
  * VISIBLE PROJECTS
- * Allows for searching applied in the browser
+ * Allows for searching applied in the browser.
  */
 const visible = useMemo(() => {
 	const term = search.trim().toLowerCase();
@@ -48,9 +55,15 @@ const visible = useMemo(() => {
 
 async function handleDeleteOnConfirmed() {
 	if (!deleteTarget) return;
-	await projectsApi.remove(deleteTarget.id);
-	setDeleteTarget(null);
-	load();
+
+	try {
+		await projectsApi.remove(deleteTarget.id);
+		setDeleteTarget(null);
+		load();
+	} catch (err) {
+		const message = err instanceof ApiError ? err.message : "An unexpected error occurred.";
+		setActionError(`Could not delete "${deleteTarget.name}". ${message}`);
+	}
 }
 
 return (
@@ -64,6 +77,12 @@ return (
 				New Project
 			</button>
 		</div>
+
+		{actionError && (
+			<p className="error-text" role="alert" style={{ marginBottom: "1rem" }}>
+				{actionError}
+			</p>
+		)}
 
 		{projects.length > 0 && (
 			<div className="toolbar">
@@ -80,8 +99,15 @@ return (
 				</span>
 			</div>
 		)}		
-
-		{loading ? (
+		
+		{loadError ? (
+			<p className="error-text" role="alert">
+				{loadError}{" "}
+				<button type="button" className="btn btn-ghost btn-small" onClick={load}>
+					Retry
+				</button>
+			</p>
+		) : loading ? (
 			<SkeletonBlock rows={4} />
 		) : projects.length === 0 ? (
 			<EmptyState title="No projects yet.">
@@ -107,7 +133,7 @@ return (
 							<button 
 								type="button"
 								className="btn btn-danger btn-small" 
-								onClick={() => setDeleteTarget(p)}
+								onClick={() => { setActionError(null); setDeleteTarget(p); }}
 							>
 								Delete
 							</button>
