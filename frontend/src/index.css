@@ -524,12 +524,24 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 .empty-state strong{ display: block; color: var(--ink-2); font-weight: 600; margin-bottom: 0.3rem; font-family: Archivo }
 
 /*
- * MISCELLANEOUS
+ * TEXT TRUNCATION
  */
-.page-head{ display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s4); flex-wrap: wrap; margin-bottom: var(--s5) }
-.page-head p { color: var(--ink-3); font-size: 0.9rem; margin-top: 0.35rem }
-.meta-line { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; color: var(--ink-3); font-size: 0.85rem; margin-top: 0.5rem }
+.clamp-2{
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	line-clamp: 2;
+	overflow: hidden;
+}
+.truncate{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
 
+/*
+ * TABLE ACTIONS
+ */
 .actions-cell{
 	width: 1%;
 	white-space: nowrap;
@@ -537,6 +549,13 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 }
 .actions-cell > *{margin-left: 0.4rem}
 .actions-cell > *:first-child{margin-left: 0}
+
+/*
+ * MISCELLANEOUS
+ */
+.page-head{ display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s4); flex-wrap: wrap; margin-bottom: var(--s5) }
+.page-head p { color: var(--ink-3); font-size: 0.9rem; margin-top: 0.35rem }
+.meta-line { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; color: var(--ink-3); font-size: 0.85rem; margin-top: 0.5rem }
 
 /*
  * SKELETON LOADERS

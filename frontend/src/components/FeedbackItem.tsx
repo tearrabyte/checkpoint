@@ -45,7 +45,9 @@ export function FeedbackItem({ item, expanded, onToggle, onTriageChange, onDelet
             >
                 <span className="feedback-head">
                     <Badge kind="category" value={item.category} />
-                    <span className="feedback-title">{item.title}</span>
+                    <span className="feedback-title truncate" style={{ maxWidth: "32ch" }} title={item.title}>
+						{item.title}
+					</span>
                 </span>
                 <span className="feedback-head">
                     <Badge kind="priority" value={item.priority} />

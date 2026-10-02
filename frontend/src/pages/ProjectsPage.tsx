@@ -121,8 +121,14 @@ return (
 			<div className="card-grid">
 				{projects.map((p) => (
 					<article className="card project-card" key={p.id}>
-						<h3><Link to={`/projects/${p.id}`}>{p.name}</Link></h3>
-						<p className="muted" style={{ fontSize: "0.88rem", lineHeight: 1.55 }}>
+						<h3 className="truncate" title={p.name}>
+							<Link to={`/projects/${p.id}`}>{p.name}</Link>
+						</h3>
+						<p 
+							className="muted clamp-2" 
+							style={{ fontSize: "0.88rem", lineHeight: 1.55 }}
+							title={p.description || undefined}
+						>
 							{p.description || "No description provided."}
 						</p>
 						<div className="project-meta">
