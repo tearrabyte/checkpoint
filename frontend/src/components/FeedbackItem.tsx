@@ -43,13 +43,13 @@ export function FeedbackItem({ item, expanded, onToggle, onTriageChange, onDelet
                 aria-expanded={expanded}
                 aria-controls={detailId}
             >
-                <span className="feedback-head">
+                <span className="feedback-head" style={{ flex: "1 1 auto", minWidth: 0 }}>
                     <Badge kind="category" value={item.category} />
-                    <span className="feedback-title truncate" style={{ maxWidth: "32ch" }} title={item.title}>
+                    <span className="feedback-title truncate" style={{ minWidth: 0 }} title={item.title}>
 						{item.title}
 					</span>
                 </span>
-                <span className="feedback-head">
+                <span className="feedback-head" style={{ flex: "0 0 auto" }}>
                     <Badge kind="priority" value={item.priority} />
                     <Badge kind="status" value={item.status} />
                 </span>

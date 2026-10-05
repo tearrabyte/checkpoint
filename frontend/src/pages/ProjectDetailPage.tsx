@@ -126,7 +126,7 @@ export function ProjectDetailPage() {
 			
 			<div className="page-head">
 				<div>
-					<h2 style={{ marginBottom: 0 }}>Playtest Sessions</h2>
+					<h2>Playtest Sessions</h2>
 					<p>Each session groups the feedback from one round of testing.</p>
 				</div>
 				<button type="button" className="btn btn-primary" onClick={openNewSession}>

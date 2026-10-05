@@ -74,13 +74,12 @@ export function SessionDetailPage() {
 			loadAll();
 		} catch (err) {
 			const detail = err instanceof ApiError 
-				? err.fieldErrors 
+				? (err.fieldErrors 
 					? Object.values(err.fieldErrors).flat().join(" ")
-					: err.message;
+					: err.message)
 				: "An unexpected error occurred.";
 				
 				setActionError(`Could not update "${item.title}". ${detail}`);
-			}
 		}
 	}
 

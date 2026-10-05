@@ -58,7 +58,7 @@ export function AllFeedbackPage() {
 				category: filters.category || undefined,
 			})
 			.then(setItems)
-			.catch(() => { setItems([]); setLoadError("Could not load feedback. Check your connection and try again."))
+			.catch(() => { setItems([]); setLoadError("Could not load feedback. Check your connection and try again."); })
 			.finally(() => setLoading(false));
 	}
 	
@@ -101,8 +101,10 @@ export function AllFeedbackPage() {
 	return (
 		<div>
 			<div className="page-head">
-				<h1>All Feedback</h1>
-				<p>Everything reported across every project and playtest session.</p>
+				<div>
+					<h1>All Feedback</h1>
+					<p>Everything reported across every project and playtest session.</p>
+				</div>
 			</div>
 
 			<div className="toolbar">

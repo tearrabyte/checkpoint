@@ -91,9 +91,9 @@ body::before{
  * TYPOGRAPHY
  * Shared heading and paragraph styles.
  */
-h1, h2, h3 {font-family: Archivo, Inter, sans-serif; letter-spacing: -0.02em; margin: 0}
+h1, h2, h3 {font-family: Archivo, Inter, sans-serif; letter-spacing: -0.02em; margin: 0 0 var(--s3) 0}
 h1 {font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.15rem); font-weight: 700; line-height: 1.1}
-h2 {font-size: 1.15rem; font-weight: 600; margin-bottom: var(--s4)}
+h2 {font-size: 1.15rem; font-weight: 600; margin-bottom: var(--s4); margin-top: var(--s6)}
 h3 {font-size: 0.98rem; font-weight: 600}
 p {margin: 0}
 
@@ -422,12 +422,18 @@ p {margin: 0}
  * Backdrop, dialog and action layout.
  */
 .modal-backdrop { 
-	position: fixed; inset: 0; background: rgba(4, 7, 18, 0.72); backdrop-filter: blur(6px); display: grid; place-items: center; padding: var(--s4);
-	padding-top: calc(var(--s4) + env(safe-area-inset-top, 0px)); padding-bottom: calc(var(--s4) + env(safe-area-inset-bottom, 0px));
+	position: fixed; inset: 0; z-index: 60;
+	background: rgba(4, 7, 18, 0.72); 
+	backdrop-filter: blur(6px); 
+	display: grid; place-items: center; 
+	overflow-y: auto;
+	padding: var(--s4);
+	padding-top: calc(var(--s4) + env(safe-area-inset-top, 0px)); 
+	padding-bottom: calc(var(--s4) + env(safe-area-inset-bottom, 0px));
 }
 .modal{
   display: flex; flex-direction: column;
-  width: 100%; max-width: 420px; 
+  width: 100%; max-width: 560px; 
   max-height: calc(100vh - 2rem);
   max-height: calc(100dvh - 2rem);
   background: rgba(23, 30, 56, 0.94);
