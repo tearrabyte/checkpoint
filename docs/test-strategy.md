@@ -35,7 +35,7 @@ The objective of this testing approach is to validate that business functions, s
 | Acceptance  | Informal self-acceptance against the FR table | Confirm the prototype meets its requirements				| Each functional requirement checked against its wording as the acceptance criterion. |
 
 ## Test Types
-The following test types have been considered based on the requirements and risks associated with Checkpoint. Functional testing is the primary focus of the initial test cases. Remaining test types are included where they can be addressed realistically within the prototype environment, while performance and broader security testing are explicitly deferred.
+The following test types have been considered based on the requirements and risks associated with Checkpoint. Functional testing is the primary focus of the initial test cases. Remaining test types are included where they can be addressed realistically within the prototype environment.
 
 The purpose of this section is to define the overall testing strategy. Not every test type listed below will result in a separate test case during the initial testing phase.
 
@@ -48,13 +48,13 @@ The primary focus of this test strategy and current testing implementation, as m
 
 **Supporting Testing**
 - **Database testing**: Checks persistence, relationships and cascade-delete behaviour between models/entities within the application. This can also be verified through code inspection and database behaviour.
-- **Usability testing (informal)**: Considers whether a first-time user can understand the core workflow of Checkpoint and navigate through all the pages without complication. For this project, this is performed informally during manual testing rather than as a formal observation study.
+- **Usability testing**: Considers whether a first-time user can understand the core workflow of Checkpoint and navigate through all the pages without complication.
 - **Compatibility testing**: Ensures the application builds and runs as expected on the outlined environment from NFR-03. In the case of Checkpoint, it has been limited to Google Chrome on Windows. Other operating systems and browsers are outside the formal scope of testing.
 - **Regression testing (manual)**: Rerun important existing workflows after large changes to confirm previous functionality remains.
 
 **Deferred / Limited Testing**
-- **Security testing (input handling only)**: Basic checks of user-supplied input are included, particularly text fields such as descriptions and notes. Broader security testing, including authentication, authorisation and penetration testing, is outside the prototype scope.
-- **Performance testing - deferred**: NFR-01 defines a two-second response target, but formal performance measurement is not included in the initial test-case set. This should be addressed in a later testing phase as the prototype is developed further.
+- **Security:**: Basic input-handling security is tested in TC-13 using boundary lengths, markup and script input, and SQL-like text. Authentication, authorisation and penetration testing remain out of scope because the prototype has no user accounts.
+- **Performance:**: Performance is tested in TC-14 by measuring API response times in the Chrome DevTools Network panel against the two second threshold in NFR-01, on the local prototype environment with a small dataset. Load and stress testing remain out of scope.
 
 ## Functional Testing Approach
 Functional testing will form the primary focus of the initial test cases. The techniques below will be used where they provide useful coverage, but not every technique will result in a separate test case.
@@ -69,10 +69,10 @@ Overall, functional coverage will concentrate on project, session, feedback, fil
 
 ## Non-Functional Testing Approach
 Non-functional requirements will be addressed using a combination of direct testing, informal observation and code inspection where possible. Key non-functional requirements are addressed below.
-- **NFR-01 - Performance**: The two-second response target will not be formally measured during the initial prototype phase. Basic responsiveness was observed during manual use, but this is not treated as evidence. Formal performance testing is deferred, and may be noted as a risk.
+- **NFR-01 - Performance**: The two-second response target will be tested by measuring API response times in the Chrome DevTools Network panel.
 - **NFR-02 - Persistence**: Persistence will be checked by restarting the backend and confirming previously stored projects, sessions and feedback remain available.
 - **NFR-03 - Compatibility**: The application will be tested within the specified Chrome/Windows environment. Cross-browser and cross-platform testing are outside the scope of this prototype.
-- **NFR-05 - Usability**: Usability will be assessed informally during manual execution of the core workflow, considering navigation clarity, consistency of layout and formatting, as well as general understanding.
+- **NFR-05 - Usability**: Usability is tested in TC-16 as a task-based observation of a first-time user completing project creation, session creation and defect submission without help.
 - **NFR-07 - Validation**: Input validation will be tested through negative scenarios including blank required fields, white-space only values and incomplete defect submissions.
 
 ## Entry and Exit Criteria
@@ -86,10 +86,13 @@ Non-functional requirements will be addressed using a combination of direct test
 
 **Exit criteria:**  
 *The following conditions will be used to decide whether testing is sufficiently complete.*
-- All requirements selected for the initial test scope have been covered by at least one test case.
-- All eight planned initial test cases have been executed.
-- Failed tests have been investigated and documented.
-- Known limitations and any remaining defects have been recorded.
+- At least fifteen of the eighteen planned tests are executed. Any test not run is recorded as Blocked with a reason.
+- Every test covering FR-01 to FR-09 and FR-13 passes on the final run.
+- At least 90% of executed tests pass on the final run.
+- No Critical or High severity defect remains open. Open Medium and Low defects are justified under Remaining Quality Risks.
+- Every failed test has a defect ID, a corrective action and a retest result.
+- Every requirement maps to at least one test or a written justification.
+- Every measured response time for NFR-01 is 2 seconds or less.
 
 ## Environment, Tools and Dependencies
 | Area             | Environment/Tool							 |
