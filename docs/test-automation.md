@@ -20,14 +20,20 @@ Unit tests check the conditional defect
 | TC-10 | Filter feedback | Many combinations, ideal to repeat | API Integration | Implemented | Filters_ReturnOnlyMatchingItems |
 | TC-11 | Dashboard accuracy | Numbers are easy to assert. | API Integration | Implemented | Dashboard_TotalsIncreaseByTheDataAdded |
 | TC-13 | Project name length boundaries | Boundaries are easily repeatable. Script text rendering needs a browser, so stays manual. | API Integration (Boundaries only) | Implemented | CreateProject_NameLength_IsEnforced |
+| DEF-06 | Recategorise feedback to Defect without defect fields | Regression guard for DEF-06 | Unit and API Integration | Implemented | RecategoriseToDefect_WithoutDefectFields_Returns400 |
 
 ## Automated Test Results
-| Metric | Result |
+| Metric | First Run | Final Run
 | --- | --- |
-| Automated Tests Planned | 10 |
-| Automated Tests Executed | |
-| Automated Tests Passed | |
-| Automated Tests Failed | |
+| Automated Tests Planned | 16 |  |
+| Automated Tests Executed | 16 |  |
+| Automated Tests Passed | 15 |  |
+| Automated Tests Failed | 1 |  |
+| Duration | 4.7 seconds |  |
+
+The first run failed 1 test, exposing DEF-06 (the update validation was never run). After the fix all 17 pass.
+
+The number of automated tests does not match the number of rows in the table above. One case can be covered by several automated tests.
 
 ## Benefits
 

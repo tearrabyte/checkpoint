@@ -71,7 +71,7 @@ public class FeedbackCreateDto : IValidatableObject
  * UPDATE FEEDBACK DTO
  * Defines the information that can be changed when updating a feedback report.
  */
-public class FeedbackUpdateDto
+public class FeedbackUpdateDto : IValidatableObject
 {
     [Required]
     public FeedbackCategory Category {  get; set; }

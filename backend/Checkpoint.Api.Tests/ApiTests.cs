@@ -174,6 +174,20 @@ public class ApiTests
         Assert.AreEqual("InProgress", fetched.GetProperty("status").GetString());
     }
 
+    /* DEF-06 Guard */
+    [TestMethod]
+    public async Task RecategoriseToDefect_WithoutDefectFields_Returns400()
+    {
+        var projectId = await _client.CreateProjectAsync();
+        var sessionId = await _client.CreateSessionAsync(projectId);
+        var feedbackId = await _client.CreateFeedbackAsync(projectId, sessionId);
+
+        var response = await _client.PutAsJsonAsync($"{FeedbackUrl(projectId, sessionId)}/{feedbackId}",
+            new { category = "Defect", priority = "Medium", status = "New" });
+
+        Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+    }
+
     /* TC-10: Filter feedback */
     [TestMethod]
     public async Task Filters_ReturnOnlyMatchingItems()
