@@ -8,7 +8,7 @@ TC-01 to TC-08 were initial test cases developed to provide coverage of the high
 ## Test Environment and Build Under Test
 | Item | Value |
 | --- | --- |
-| Build (git commit) | cf3a1f5 |
+| Build (git commit) | 2cbc8ff |
 | Browser | Google Chrome 137.0.7151.104 (Official Build) (64-bit) |
 | Operating System | Windows 11 25H2 |
 | .NET SDK | 10.0.401 |
@@ -285,7 +285,7 @@ The test data used in the test cases involves one project, one session and five 
 - **Test type:** Non-functional, Inspection.
 - **Objective:** Verify that the frontend, backend and data layers are separated.
 - **Preconditions:** Source code open in VS Code.
-- **Steps:&& (1) Search the frontend src folder for fetch( and check it appears only in api/client.ts. (2) Search the backend for CheckpointDbContext and check it appears only in controllers and Program.cs. (3) Search the backend for FromSql, ExecuteSql and SqliteConnection and check there are no results. (4) Open one controller and check it returns DTOs, not entities. (5) Screenshot both folder structures.
+- **Steps:** (1) Search the frontend src folder for fetch( and check it appears only in api/client.ts. (2) Search the backend for CheckpointDbContext and check it appears only in controllers and Program.cs. (3) Search the backend for FromSql, ExecuteSql and SqliteConnection and check there are no results. (4) Open one controller and check it returns DTOs, not entities. (5) Screenshot both folder structures.
 - **Expected result:** All four checks hold.
 - **Evidence:** `docs/evidence/TC-18/`
 - **Actual result:** Not run
@@ -324,7 +324,7 @@ Defect IDs refer to `docs/defect-register.md`.
 | FR-02 | View and update project | Edit project dialog, PUT | TC-09 | To Confirm | Not Run | |
 | FR-03 | Create playtest session | New session dialog | TC-03 | To Confirm | Not Run | |
 | FR-04 | View and update session | Edit action in the sessions table (details and status) | TC-09 | To Confirm | Not Run | |
-| FR-05 | Submit feedback | Submit feedback dialog | TC-04, TC-13 | To Confirm | Not Run | |
+| FR-05 | Submit feedback | Submit feedback dialog | TC-04, TC-13 | To Confirm | Not Run | DEF-05 |
 | FR-06 | Defect fields required | Conditional defect fields with server validation | TC-05, TC-06 | To Confirm | Not Run | DEF-01, DEF-03 |
 | FR-07 | Categorise feedback | Category chosen at submission; the API also allows recategorising, the UI does not | TC-04 | To Confirm | Not Run | |
 | FR-08 | Assign priority | Priority control on each feedback item | TC-07 | To Confirm | Not Run | |
