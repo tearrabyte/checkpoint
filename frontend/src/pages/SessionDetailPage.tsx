@@ -98,7 +98,7 @@ export function SessionDetailPage() {
 			loadAll();
 		} catch (err) {
 			const message = err instanceof ApiError ? err.message : "An unexpected error occurred.";
-			setActionError(`Could not delete "${deleteTarget.name}". ${message}`);
+			setActionError(`Could not delete "${deleteTarget.title}". ${message}`);
 		}
 	}
 
