@@ -78,8 +78,9 @@ The test data used in the test cases involves one project, one session and five 
 - **Test data:** Title: Menu confusing. Description: Main menu items are not intuitive. Name: (blank). Category: Usability. Priority: Medium.
 - **Expected result:** The POST returns 201, the item appears in the list with a Usability badge, and the four defect fields were neither shown nor required.
 - **Evidence:** Report Appendix A.
-- **Actual result:** Submission succeeded and feedback was created correctly (201, item appeared in list), but typing in the Title/Description fields repeatedly moved keyboard focus to the dialog's close button, making text entry very difficult. This is a usability defect, not a functional blocker — the feedback could still be entered with effort. Logged as DEF-07.
-- **Status:** Pass
+- **Actual result (run 1):** Submission succeeded and feedback was created correctly (201, item appeared in list), but typing in the Title/Description fields repeatedly moved keyboard focus to the dialog's close button, making text entry very difficult. This is a usability defect, not a functional blocker — the feedback could still be entered with effort. Logged as DEF-07.
+- **Actual result (run 2):** Submission succeeded and feedback was created correctly (201, item appeared in list), but typing in the Title/Description fields repeatedly moved keyboard focus to the dialog's close button, making text entry very difficult. This is a usability defect, not a functional blocker — the feedback could still be entered with effort. Logged as DEF-07.
+- **Status:** Fail (run 1), Pass (run 2)
 
 ---
 
@@ -172,7 +173,7 @@ The test data used in the test cases involves one project, one session and five 
 - **Objective:** Verify that the dashboard figures match the known data.
 - **Preconditions:** Dataset D1 complete. TC-09 done (the session status is In Progress).   
 - **Steps:** Open the Dashboard and compare each figure to the expected values below.
-- **Expected values:** Projects 1; Playtest sessions 1; Feedback items 5; Open high and critical issues 3; Defects reported 2; Category: Defect 2, Usability 1, Gameplay 1, Balance 1; Status: New 3, In Progress 1, Resolved 1; Priority: Low 1,  High 2, Critical 2; Recent sessions shows the session as In Progress with 5 feedback; the sessions-over-time chart shows 1 session in the month of the session date.
+- **Expected values:** Projects 1; Playtest sessions 1; Feedback items 5; Open high and critical issues 3; Defects reported 2; Category: Defect 2, Usability 1, Gameplay 1, Balance 1; Status: New 3, In Progress 1, Resolved 1; Priority: Low 1, Medium: 0, High 2, Critical 2; Recent sessions shows the session as In Progress with 5 feedback; the sessions-over-time chart shows 1 session in the month of the session date.
 - **Evidence:** Report Appendix A. Also confirmed by `Api.Tests.Dashboard_TotalsIncreaseByTheDataAdded`
 - **Actual result:** Dashboard displayed the correct number of projects, sessions, feedback items, as well as high and critical issues, defects reported, feedback count by category, status, and priority, as well as playtest sessions over time and recent session information. 
 - **Status:** Pass
@@ -280,8 +281,9 @@ The test data used in the test cases involves one project, one session and five 
 - **Steps:** (1) Clone the repository into a new empty folder. (2) Follow only the README, noting any step that is missing, wrong or unclear. (3) Open the app in Chrome and create a project.
 - **Expected result:** The app starts on an empty database using only documented steps, and a project can be created.
 - **Evidence:** Report Appendix A.
-- **Actual result:** The repository was successfully cloned, however the backend dotnet run requires an additional --project .\Checkpoint.Api. Frontend and project creation worked as expected. Logged as DEF-08.
-- **Status:** Pass
+- **Actual result (run 1):** The repository was successfully cloned, however the backend dotnet run requires an additional --project .\Checkpoint.Api. Frontend and project creation worked as expected. Logged as DEF-08.
+- **Actual result (run 2):** The repository was successfully cloned, backend and frontent run with no errors and a project can be created as expected.
+- **Status:** Fail (run 1), Pass (run 2)
 
 ---
 

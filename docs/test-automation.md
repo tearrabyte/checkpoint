@@ -9,7 +9,7 @@ Selected manual test cases were automated with MSTest in `backend/Checkpoint.Api
 Unit tests check the conditional defect
 ## Test Cases Selected for Automation
 | Test Case ID | Description | Rationale for Automation | Automation Type | Automation Status | Automated By |
-| --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- |
 | TC-01 | Create a valid project | Stable and fast. Runs on every change | API Integration | Implemented | CreateProject_WithValidData_Returns201 |
 | TC-02 | Reject a blank project name | Negative path that is easy to repeat | API Integration | Implemented | CreateProject_WithBlankName_Returns400WithNameError |
 | TC-03 | Create a playtest session | Core workflow. Guards string enum output (DEF-01) | API Integration | Implemented | CreateSession_Returns201WithReadableStatus |
@@ -24,7 +24,7 @@ Unit tests check the conditional defect
 
 ## Automated Test Results
 | Metric | First Run | Final Run
-| --- | --- |
+| --- | --- | --- |
 | Automated Tests Planned | 16 | 17 |
 | Automated Tests Executed | 16 | 17 |
 | Automated Tests Passed | 15 | 17 |
