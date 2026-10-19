@@ -10,12 +10,9 @@
   [![ASP.NET Core][aspnet-shield]][aspnet-url]
   [![C#][csharp-shield]][csharp-url]
   [![SQLite][sqlite-shield]][sqlite-url]
-  
 
   <br />
 
-  <!-- TODO: ADD HEADING LOGO HERE -->
-  
   # Checkpoint
   #### *A structured playtesting and software quality assurance platform for indie game development.*
   A locally hosted prototype designed to help indie developers organise playtesting feedback, manage defects, and monitor software quality.
@@ -100,7 +97,7 @@ Open a terminal and run:
 ```sh
 cd backend
 dotnet restore
-dotnet run
+dotnet run --project .\Checkpoint.Api
 ```
 Keep this terminal running. The API address will be shown in the terminal output.
 

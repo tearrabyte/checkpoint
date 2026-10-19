@@ -79,7 +79,7 @@ The test data used in the test cases involves one project, one session and five 
 - **Expected result:** The POST returns 201, the item appears in the list with a Usability badge, and the four defect fields were neither shown nor required.
 - **Evidence:** Report Appendix A.
 - **Actual result:** Submission succeeded and feedback was created correctly (201, item appeared in list), but typing in the Title/Description fields repeatedly moved keyboard focus to the dialog's close button, making text entry very difficult. This is a usability defect, not a functional blocker — the feedback could still be entered with effort. Logged as DEF-07.
-- **Status:** Fail
+- **Status:** Pass
 
 ---
 
@@ -268,7 +268,7 @@ The test data used in the test cases involves one project, one session and five 
 - **Expected result:** All three tasks are completed without help. If help was needed, record where.
 - **Evidence:** 
 - **Actual result:** Not run
-- **Status:** Blocked - Waiting on DEF-07 resolution before participant to complete.
+- **Status:** Not Run
 
 ---
 
@@ -281,7 +281,7 @@ The test data used in the test cases involves one project, one session and five 
 - **Expected result:** The app starts on an empty database using only documented steps, and a project can be created.
 - **Evidence:** Report Appendix A.
 - **Actual result:** The repository was successfully cloned, however the backend dotnet run requires an additional --project .\Checkpoint.Api. Frontend and project creation worked as expected. Logged as DEF-08.
-- **Status:** Fail
+- **Status:** Pass
 
 ---
 
@@ -304,18 +304,18 @@ The test data used in the test cases involves one project, one session and five 
 | --- | --- |
 | Planned | 18 |
 | Executed | 17 |
-| Passed | 15 |
-| Failed | 2 |
-| Blocked | 1 |
-| Not Run | 0 |
+| Passed | 17 |
+| Failed | 0 |
+| Blocked | 0 |
+| Not Run | 1 |
 
 Counts describe the final run. Failures found on an earlier run and later fixed are listed in the next section.
 
 ## Failed Test Investigation
 | Test Case | Defect ID | Failure | Corrective Action | Regression Result |
 | --- | --- | --- | --- | --- |
-| TC-04 | DEF-07 |
-| TC-17 | DEF-08 |
+| TC-04 | DEF-07 | Typing in the feedback dialog caused keyboard focus to jump to the close button because the focus-management effect reran when the onClose callback reference changed. | Corrected the focus-management effect to prevent unnecessaru refocusing during parent re-renders and form input. | TC-04 rerun passed. |
+| TC-17 | DEF-08 | README setup instructions used `dotnet run` rather than explicitly targeting the API project. | Updated the command to `dotnet run --project .\Checkpoint.Api` and verified the setup on a clean clone. | TC-17 passed upon re-run.
 
 Defect IDs refer to `docs/defect-register.md`.
 
@@ -324,11 +324,13 @@ DEF-06 was found by automated testing, discovered in `docs/test-automation.md` a
 ## Regression Testing
 | Change or Defect | Test Case(s) Re-Run | Result |
 | --- | --- | --- |
-| UI Overhaul: Design system, dialogs, dashboard charts | TC-01, TC-05, TC-06, TC-08 (manual). Automated `CreateProject_WithValidData_Returns201`, `SubmitDefect_WithAllFields_Returns201`, `SubmitDefect_WithoutDefectFields_Returns400ForEachField`, `DeleteProject_RemovesItsSessionsAndFeedback` | Automated: all pass. Manual: pending |
-| DEF-01 Fix: Enum serialisation | TC-03, TC-05 (manual). Automated `CreateSession_Returns201WithReadableStatus` | Automated: pass. Manual: pending |
-| DEF-06 Fix: FeedbackUpdateDto validation | TC-06 (manual). Automated `RecategoriseToDefect_WithoutDefectFields_Returns400`, `Update_RecategorisedToDefect_WithoutDefectFields_ReportsAllFourFields`. | Automated: both pass. Manual: pending | 
-| DEF-07 Fix: |
-| DEF-08 Fix: |
+| UI Overhaul: Design system, dialogs, dashboard charts | TC-01, TC-05, TC-06, TC-08 (manual). Automated `CreateProject_WithValidData_Returns201`, `SubmitDefect_WithAllFields_Returns201`, `SubmitDefect_WithoutDefectFields_Returns400ForEachField`, `DeleteProject_RemovesItsSessionsAndFeedback` | Automated: All pass. Manual: Pass |
+| DEF-01 Fix: Enum serialisation | TC-03, TC-05 (manual). Automated `CreateSession_Returns201WithReadableStatus` | Automated: Pass. Manual: Pass |
+| DEF-06 Fix: FeedbackUpdateDto validation | TC-06 (manual). Automated `RecategoriseToDefect_WithoutDefectFields_Returns400`, `Update_RecategorisedToDefect_WithoutDefectFields_ReportsAllFourFields`. | Automated: Both pass. Manual: Pass | 
+| DEF-07 Fix: Dialog focus management | TC-04 (manual). | Pass |
+| DEF-08 Fix: README startup command | TC-17 (manual). | Pass |
+
+All automated tests were rerun during regression testing and passed.
 
 ## Requirements Traceability Matrix
 This matrix summarises verification status for each requirement from both automated and manual testing. Automated test names, counts and run evidence are recorded in `docs/test-automation.md`; manual test case detail and results are recorded above in this document. The Result column here reflects both.
@@ -339,21 +341,21 @@ This matrix summarises verification status for each requirement from both automa
 | FR-02 | View and update project | Edit project dialog, PUT | TC-09 | Manual | Pass | |
 | FR-03 | Create playtest session | New session dialog | TC-03 | Automated and manual | Automated: Pass. Manual: Pass | |
 | FR-04 | View and update session | Edit action in the sessions table (details and status) | TC-09 | Manual | Pass | DEF-05 |
-| FR-05 | Submit feedback | Submit feedback dialog | TC-04, TC-13 | Manual | Fail (TC-04) | DEF-07 |
+| FR-05 | Submit feedback | Submit feedback dialog | TC-04, TC-13 | Manual | Pass | DEF-07 |
 | FR-06 | Defect fields required | Conditional defect fields with server validation | TC-05, TC-06 | Automated and manual | Automated: Pass. Manual: Pass | DEF-01, DEF-03, DEF-06 |
-| FR-07 | Categorise feedback | Category chosen at submission; the API also allows recategorising, the UI does not | TC-04 | Manual | Fail | |
+| FR-07 | Categorise feedback | Category chosen at submission; the API also allows recategorising, the UI does not | TC-04 | Manual | Pass | |
 | FR-08 | Assign priority | Priority control on each feedback item | TC-07 | Automated and manual | Automated: Pass. Manual: Pass | |
 | FR-09 | Update status | Status control on each feedback item (any transition allowed) | TC-07 | Automated and manual | Automated: Pass. Manual: Pass | |
-| FR-10 | View feedback | Session feedback list with expandable details, All feedback table | TC-04, TC-05, TC-10 | Automated (partial) and manual | Automated: Pass (TC-05, TC-10 only). Manual: Fail (TC-04) | |
+| FR-10 | View feedback | Session feedback list with expandable details, All feedback table | TC-04, TC-05, TC-10 | Automated (partial) and manual | Automated: Pass (TC-05, TC-10 only). Manual: Pass | |
 | FR-11 | Filter feedback | Status, priority and category filters and title search; a session filter exists in the API only | TC-10 | Automated and manual | Automated: Pass. Manual: Pass | |
 | FR-12 | Dashboard/quality overview | Dashboard counts, charts and recent sessions | TC-11 | Automated and manual | Automated: Pass. Manual: Pass. | |
 | FR-13 | Delete with confirmation and cascade | Confirmation dialog, cascade delete | TC-08 | Automated (cascade only) and manual | Automated: Pass. Manual: Pass | |
 | NFR-01 | Response time of 2 seconds or less | Measured, not built | TC-14 | Manual | Pass | |
 | NFR-02 | Persistence across restarts | SQLite via EF Core | TC-12 | Manual | Pass | |
-| NFR-03 | Chrome on Windows | Environment of every test | All | Manual | Fail (TC-04, TC-17) Blocked (TC-16) | |
+| NFR-03 | Chrome on Windows | Environment of every test | All | Manual | Not Run (TC-16) | |
 | NFR-04 | Layer separation | React frontend, ASP.NET Core API, EF Core data layer | TC-18 | Manual | Pass | |
-| NFR-05 | First-time usability | Dialog-based core workflow | TC-16 | Manual | Blocked | |
-| NFR-06 | Documented setup | README | TC-17 | Manual | Fail | DEF-08 |
+| NFR-05 | First-time usability | Dialog-based core workflow | TC-16 | Manual | Not Run | |
+| NFR-06 | Documented setup | README | TC-17 | Manual | Pass | DEF-08 |
 | NFR-07 | Input validation and sanitisation | DTO validation, output encoding, parameterised queries | TC-02, TC-06, TC-13 | Automated (partial) and manual | Automated: Pass (TC-02, TC-06 only). Manual: Pass | |
 
 ## Remaining Quality Risks

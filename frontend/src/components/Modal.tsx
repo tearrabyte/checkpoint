@@ -32,6 +32,11 @@ const FOCUSABLE =
 export function Modal({ open, title, description, size = "default", children, footer, onClose }: ModalProps) {
     const dialogRef = useRef<HTMLDivElement>(null);
 
+    const onCloseRef = useRef(onClose);
+    useEffect(() => {
+        onCloseRef.current = onClose;
+    }, [onClose]);
+
     useEffect(() => {
         if (!open) return;
 
@@ -44,12 +49,13 @@ export function Modal({ open, title, description, size = "default", children, fo
 
         /* Focus on the dialog */
         const focusables = dialogRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE);
-        focusables?.[0]?.focus();
+        const firstNonClose = Array.from(focusables ?? []).find((el) => !el.classList.contains("modal-close"));
+        (firstNonClose ?? focusables?.[0])?.focus();
 
         function handleKeyDown(event: KeyboardEvent) {
             if (event.key === "Escape") {
                 event.preventDefault();
-                onClose();
+                onCloseRef.current();
                 return;
             }
 
@@ -78,7 +84,7 @@ export function Modal({ open, title, description, size = "default", children, fo
             document.body.style.overflow = previousOverflow;
             previouslyFocused?.focus();
         };
-    }, [open, onClose]);
+    }, [open]);
 
     if (!open) return null;
 
