@@ -19,27 +19,37 @@ Unit tests check the conditional defect
 | TC-08 | Delete a project with cascade | Data integrity rule. The confirmation dialog stays manual | API Integration (Cascade only) | Implemented | DeleteProject_RemovesItsSessionsAndFeedback |
 | TC-10 | Filter feedback | Many combinations, ideal to repeat | API Integration | Implemented | Filters_ReturnOnlyMatchingItems |
 | TC-11 | Dashboard accuracy | Numbers are easy to assert. | API Integration | Implemented | Dashboard_TotalsIncreaseByTheDataAdded |
-| TC-13 | Project name length boundaries | Boundaries are easily repeatable. Script text rendering needs a browser, so stays manual. | API Integration (Boundaries only) | Implemented | CreateProject_NameLength_IsEnforced |
+| TC-13 | Project name input boundaries | Boundaries are easily repeatable. Script text rendering needs a browser, so stays manual. | API Integration (Boundaries only) | Implemented | CreateProject_BoundaryAndUnsafeInput_IsHandledCorrectly |
 | DEF-06 | Recategorise feedback to Defect without defect fields | Regression guard for DEF-06 | Unit and API Integration | Implemented | RecategoriseToDefect_WithoutDefectFields_Returns400 |
 
 ## Automated Test Results
 | Metric | First Run | Final Run
 | --- | --- |
-| Automated Tests Planned | 16 |  |
-| Automated Tests Executed | 16 |  |
-| Automated Tests Passed | 15 |  |
-| Automated Tests Failed | 1 |  |
-| Duration | 4.7 seconds |  |
+| Automated Tests Planned | 16 | 17 |
+| Automated Tests Executed | 16 | 17 |
+| Automated Tests Passed | 15 | 17 |
+| Automated Tests Failed | 1 | 0 |
+| Duration | 4.7 seconds | 1.7 seconds |
 
 The first run failed 1 test, exposing DEF-06 (the update validation was never run). After the fix all 17 pass.
 
 The number of automated tests does not match the number of rows in the table above. One case can be covered by several automated tests.
 
 ## Benefits
+Automated tests provide a standard, efficient, and reliable way of repeatedly testing core workflows within an application. The implemented test suite for Checkpoint provides value by allowing tests to be run in seconds with a single command, which produce the same result each time. This automated workflow is also able to connect with GitHub, enabling each push to run the tests once more so a regression is caught without the need for prompted testing. Furthermore, the tests use an in-memory database, so that tests are isolated from real data.
+
+Such testing also allowed defects to be automatically guarded, such as the case for DEF-01 and DEF-06.
 
 ## Limitations
+While providing many benefits in the form of automated testing, the test suite implemented for Checkpoint has real limitations. There are no automated checks of the React screens within a real browser context. Tests also call the API in memory, rather than a deployed server. Similarly CI implementation, although running on Windows, does not use the target environment with Chrome. Hence, NFR-03 remains a manual check. Similarly, performance (NFR-01) is not automated as timings may be unreliable on a CI runner.
+
+`react-hooks/set-state-in-effect` is downgraded to a warning. It flags the standard fetch-on-mount pattern used throughout the app's pages. Adopting a data-fetching library to satisfy it was judged out of scope for this prototype. The warning remains visible in  `npm run lint` output rather than being silenced.
+Most notably, there is no code coverage measurement beyond requirement coverage, which must be considered when deeming overall project quality metrics.
 
 ## Maintainability
+Maintainability has been considered when implementing the automated test suite. Shared helpers for creation of projects, sessions and feedback allow for tests to be kept short. Test names and comments are used to outline which manual test case each test automates. Furthermore, tests such as the dashboard test compare totals before and after rather than comparing exact numbers, which allows the test to continue working when other tests add data.
+
+A noted limitation is that routes and field names appear as text in the automated test suite, meaning that renaming an endpoint or DTO field would require tests to be edited to reflect this. Improvements could also include splitting tests further into one file per area.
 
 ## Manual and Exploratory Testing
 Upon evaluation, some test cases were not considered suitable for automation. Key factors were the need for a person, a process restart, unreliable timings, a real browser, and review activities.
