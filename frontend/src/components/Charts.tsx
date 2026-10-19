@@ -21,29 +21,32 @@ function describe(data: ChartSlice[]) {
  */
 export function DonutChart({ data, total }: {data: ChartSlice[]; total: number }) {
     const radius = 15.9155;
-    let offset = 25; /* Start first segment at the top */
+    const segments = data.reduce<{ label: string; value: number; color: string; percent: number; dashOffset: number }[]>(
+		(acc, slice) => {
+    		const percent = total > 0 ? (slice.value / total) * 100 : 0;
+    		const previous = acc[acc.length - 1];
+    		const dashOffset = previous ? previous.dashOffset - previous.percent : 25;
+    		return [...acc, { ...slice, percent, dashOffset }];
+  		},
+  		[]
+	);
 
 	return (
 		<div className="chart-wrap">
 			<svg className="chart-svg" width="132" height="132" viewBox="0 0 42 42" role="img" aria-label={describe(data)}>
 				<circle cx="21" cy="21" r={radius} fill="none" stroke="rgba(255, 255, 255, 0.07)" strokeWidth="5" />
-				{data.map((slice) => {
-					const percent = total > 0 ? (slice.value / total) * 100 : 0;
-					const circle = (
-						<circle
-							key={slice.label}
-							cx="21"
-							cy="21"
-							r={radius}
-							fill="none"
-							stroke={slice.color}
-							strokeWidth="5"
-							strokeDasharray={`${percent} ${100 - percent}`}
-							strokeDashoffset={offset}
-						/>
-					);
-					offset -= percent;
-					return circle;
+				{segments.map((seg) => {
+					return <circle
+						key={seg.label}
+						cx="21"
+						cy="21"
+						r={radius}
+						fill="none"
+						stroke={seg.color}
+						strokeWidth="5"
+						strokeDasharray={`${seg.percent} ${100 - seg.percent}`}
+						strokeDashoffset={seg.dashOffset}
+					/>
 				})}
 				<text x="21" y="20.4" textAnchor="middle" fill="#E9EDFA" fontSize="7" fontFamily="Archivo" fontWeight="700">
 					{total}

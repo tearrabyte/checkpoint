@@ -248,4 +248,17 @@ public class ApiTests
         Assert.AreEqual(0, feedback.GetArrayLength());
     }
 
+    /* Smoke Test: Check the entire workflow still works. Used for CI */
+    [TestMethod]
+    [TestCategory("Smoke")]
+    public async Task CoreWorkflow_ProjectSessionFeedbackDashboard_Works()
+    {
+        var projectId = await _client.CreateProjectAsync();
+        var sessionId = await _client.CreateSessionAsync(projectId);
+        await _client.CreateFeedbackAsync(projectId, sessionId);
+
+        var dashboard = await _client.GetAsync("/api/dashboard");
+        Assert.AreEqual(HttpStatusCode.OK, dashboard.StatusCode);
+        Assert.IsTrue(Total(await dashboard.ReadJsonAsync(), "totalFeedbackItems") >= 1);
+    }
 }

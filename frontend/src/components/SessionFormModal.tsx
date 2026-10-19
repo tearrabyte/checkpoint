@@ -87,7 +87,12 @@ export function SessionFormModal({ open, projectId, session, onClose, onSaved }:
 			if (session) {
 				await sessionsApi.update(projectId, session.id, form);
 			} else {
-				const { status, ...createInput } = form;
+				const createInput = {
+					name: form.name,
+					sessionDate: form.sessionDate,
+					gameVersion: form.gameVersion,
+					notes: form.notes,
+				};
 				await sessionsApi.create(projectId, createInput);
 			}
 

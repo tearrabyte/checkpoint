@@ -12,14 +12,8 @@ import { Badge } from "../components/Badge";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { ProjectFormModal } from "../components/ProjectFormModal";
 import { SessionFormModal } from "../components/SessionFormModal";
-import { EmptyState, SkeletonBlock } from "../components/Ui";
+import { EmptyState, SkeletonBlock } from "../components/UI";
 import type { PlaytestSession, Project } from "../types";
-
-/*
- * EMPTY SESSION FORM
- * The initial values used when creating a new playtest session.
-*/
-const emptySessionForm = { name: "", sessionDate: "", gameVersion: "", notes: "" };
 
 /*
  * PROJECT DETAIL PAGE

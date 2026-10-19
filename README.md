@@ -10,6 +10,7 @@
   [![ASP.NET Core][aspnet-shield]][aspnet-url]
   [![C#][csharp-shield]][csharp-url]
   [![SQLite][sqlite-shield]][sqlite-url]
+  [![CI][ci-shield]][ci-url]
 
   <br />
 
@@ -190,6 +191,9 @@ Quality assurance is a central focus of the project. Development and project act
 
 [copilot-shield]: https://img.shields.io/badge/GitHub_Copilot-000000?style=for-the-badge&logo=githubcopilot&logoColor=white
 [copilot-url]: https://github.com/features/copilot
+
+[ci-shield]: https://img.shields.io/github/actions/workflow/status/tearrabyte/checkpoint/ci.yml?style=for-the-badge&logo=githubactions&logoColor=white&label=CI
+[ci-url]: https://github.com/tearrabyte/checkpoint/actions/workflows/ci.yml
 
 <!-- PROJECT CREDITS SHIELDS -->
 [tearrabyte-shield]: https://img.shields.io/badge/GitHub-tearrabyte-181717?style=for-the-badge&logo=github
