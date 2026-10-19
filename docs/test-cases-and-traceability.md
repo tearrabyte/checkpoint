@@ -262,13 +262,13 @@ The test data used in the test cases involves one project, one session and five 
 
 | Task | Completed unaided | Time | Hesitations or errors | Comments |
 |---|---|---|---|---|
-| A Create project | | | | |
-| B Create session | | | | |
-| C Submit defect | | | | |
+| A Create project | Yes | 33.56s | None | Participant confidently navigated to the Projects page and spotted the New project button quickly. They read placeholder text before coming up with a short idea and entering it. |
+| B Create session | Yes | 44.86s | None | First attempted to click the back panel of the project, but noticed the button immediately after and navigated to the project page. Already expected the button in the top right so moved confidently. Took time to read the session dialog and enter input. |
+| C Submit defect | Yes | 1m 37.08s| None | Easily found the add feedback button and begun the entry. Spent some time considering what to write and exploring the different category options. Upon exploring all options, the participant returned to Defect and successfully submitted the form.  |
 - **Expected result:** All three tasks are completed without help. If help was needed, record where.
-- **Evidence:** 
-- **Actual result:** Not run
-- **Status:** Not Run
+- **Evidence:** Results table seen above.
+- **Actual result:** All three tasks were completed by the participant without assistance.
+- **Status:** Pass
 
 ---
 
@@ -290,8 +290,7 @@ The test data used in the test cases involves one project, one session and five 
 - **Test type:** Non-functional, Inspection.
 - **Objective:** Verify that the frontend, backend and data layers are separated.
 - **Preconditions:** Source code open in VS Code.
-- **Steps:** 
-	- (1) Search the frontend src folder for fetch( and check it appears only in api/client.ts. (2) Search the backend for CheckpointDbContext and check it appears only in controllers and Program.cs. (3) Search the backend for FromSql, ExecuteSql and SqliteConnection and check there are no results. (4) Open one controller and check it returns DTOs, not entities. (5) Screenshot both folder structures.
+- **Steps:** (1) Search the frontend src folder for fetch( and check it appears only in api/client.ts. (2) Search the backend for CheckpointDbContext and check it appears only in controllers and Program.cs. (3) Search the backend for FromSql, ExecuteSql and SqliteConnection and check there are no results. (4) Open one controller and check it returns DTOs, not entities. (5) Screenshot both folder structures.
 - **Expected result:** All four checks hold.
 - **Evidence:** Report Appendix A.
 - **Actual result:** Searching for fetch( in the frontend only resulted in api/client.ts. Searching CheckpointDbContext in the backend only shows controllers and Program.cs. Backend search results for FromSql, ExecuteSql and SqliteConnection returned nothing. Controllers return DTOs. Folder structure is visible in GitHub.                                                                 
@@ -303,11 +302,11 @@ The test data used in the test cases involves one project, one session and five 
 | Result | Count |
 | --- | --- |
 | Planned | 18 |
-| Executed | 17 |
-| Passed | 17 |
+| Executed | 18 |
+| Passed | 18 |
 | Failed | 0 |
 | Blocked | 0 |
-| Not Run | 1 |
+| Not Run | 0 |
 
 Counts describe the final run. Failures found on an earlier run and later fixed are listed in the next section.
 
@@ -319,7 +318,7 @@ Counts describe the final run. Failures found on an earlier run and later fixed 
 
 Defect IDs refer to `docs/defect-register.md`.
 
-DEF-06 was found by automated testing, discovered in `docs/test-automation.md` and fixed in `docs/defect-register.md`, rather than disucssed here, since no manual test case in this document failed because of it.  
+No test case in this document failed on the final run. All 18 test cases passed. See the Test Execution Summary above. DEF-06 was found by automated testing, discovered in `docs/test-automation.md` and fixed in `docs/defect-register.md`, rather than disucssed here, since no manual test case in this document failed because of it.  
 
 ## Regression Testing
 | Change or Defect | Test Case(s) Re-Run | Result |
@@ -333,11 +332,11 @@ DEF-06 was found by automated testing, discovered in `docs/test-automation.md` a
 All automated tests were rerun during regression testing and passed.
 
 ## Requirements Traceability Matrix
-This matrix summarises verification status for each requirement from both automated and manual testing. Automated test names, counts and run evidence are recorded in `docs/test-automation.md`; manual test case detail and results are recorded above in this document. The Result column here reflects both.
+This matrix summarises verification status for each requirement from both automated and manual testing. Automated test names, counts and run evidence are recorded in `docs/test-automation.md`. Manual test case detail and results are recorded above in this document. The Result column here reflects both.
 
 | Requirement | Description | Implementation | Test Case(s) | Verification Activity | Result | Defect(s) |
 | --- | --- | --- | --- | --- | --- | --- |
-| FR-01 | Create project | New project dialog, POST/api/projects | TC-01, TC-02, TC-13 | Automated and manual | Automated: Pass Manual: Pass | |
+| FR-01 | Create project | New project dialog, POST/api/projects | TC-01, TC-02, TC-13 | Automated and manual | Automated: Pass. Manual: Pass | |
 | FR-02 | View and update project | Edit project dialog, PUT | TC-09 | Manual | Pass | |
 | FR-03 | Create playtest session | New session dialog | TC-03 | Automated and manual | Automated: Pass. Manual: Pass | |
 | FR-04 | View and update session | Edit action in the sessions table (details and status) | TC-09 | Manual | Pass | DEF-05 |
@@ -352,9 +351,9 @@ This matrix summarises verification status for each requirement from both automa
 | FR-13 | Delete with confirmation and cascade | Confirmation dialog, cascade delete | TC-08 | Automated (cascade only) and manual | Automated: Pass. Manual: Pass | |
 | NFR-01 | Response time of 2 seconds or less | Measured, not built | TC-14 | Manual | Pass | |
 | NFR-02 | Persistence across restarts | SQLite via EF Core | TC-12 | Manual | Pass | |
-| NFR-03 | Chrome on Windows | Environment of every test | All | Manual | Not Run (TC-16) | |
+| NFR-03 | Chrome on Windows | Environment of every test | All | Manual | Pass | |
 | NFR-04 | Layer separation | React frontend, ASP.NET Core API, EF Core data layer | TC-18 | Manual | Pass | |
-| NFR-05 | First-time usability | Dialog-based core workflow | TC-16 | Manual | Not Run | |
+| NFR-05 | First-time usability | Dialog-based core workflow | TC-16 | Manual | Pass | |
 | NFR-06 | Documented setup | README | TC-17 | Manual | Pass | DEF-08 |
 | NFR-07 | Input validation and sanitisation | DTO validation, output encoding, parameterised queries | TC-02, TC-06, TC-13 | Automated (partial) and manual | Automated: Pass (TC-02, TC-06 only). Manual: Pass | |
 
