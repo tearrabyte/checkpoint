@@ -25,10 +25,9 @@ Checkpoint's CI workflow file is `.github/workflows/ci.yml`. It runs on every pu
 | Frontend build | npm run build succeeds |
 | Frontend lint | npm run lint exits successfully |
 | Code review | Diff reviewed before merging |
-| Continuous deployment | Not necessary for this project. |
 
 ## Limitations
-The selected CI workflow has several limitations.Firstly, as a solo developer, independent peer review is unavailable, meaning that code changes do not benefit from a second developer's persepctive. This is mitigated through self-review of pull-request diffs and mandatory automated CI checks, which help identify potential issues before changes are integrated.
+The selected CI workflow has several limitations. Firstly, as a solo developer, independent peer review is unavailable, meaning that code changes do not benefit from a second developer's persepctive. This is mitigated through self-review of pull-request diffs and mandatory automated CI checks, which help identify potential issues before changes are integrated.
 
 Secondly, the automated API integration tests primarily verify backend behaviour and do not replace broswer-based system testing. User-interface behaviour, accessibility, visual layout, and end-to-end user workflows still require manual verification. Hence, some functional and non-functional requirements may not have automated test coverage.
 

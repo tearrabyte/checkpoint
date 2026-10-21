@@ -29,3 +29,4 @@ All five formally tested quality areas passed within their tested scope. No defe
 | Reliability | Add tests for partial/interrupted outages | Current testing covers a clean stop/restart only |
 | Maintainability | Add an automated check (e.g. a lint rule or architecture test) that enforces the frontend/backend/data-layer boundary | Prevents the boundary found correct by inspection from eroding as the codebase grows |
 | Compatibility | Test on at least one additional browser (Firefox or Edge) and consider basic accessibility checks | NFR-03 only requires Chrome/Windows, but wider compatibility reduces risk as Checkpoint may be used on other browsers as well. |
+| Accessibility | Conduct basic keyboard-navigation and colour-contrast checks, followed by screen-reader testing where feasible. | Identifies potential barriers that may prevent users with different accessibility needs from completing core workflows. |

@@ -1,4 +1,4 @@
-# Initial Test Cases and Requirements Traceability
+# Test Cases and Requirements Traceability
 
 ## Purpose
 This document defines the eighteen test cases used to verify Checkpoint, records their execution results against the final build, and traces every requirement to its implementation, tests, results and defects.
@@ -315,7 +315,7 @@ Counts describe the final run. Failures found on an earlier run and later fixed 
 ## Failed Test Investigation
 | Test Case | Defect ID | Failure | Corrective Action | Regression Result |
 | --- | --- | --- | --- | --- |
-| TC-04 | DEF-07 | Typing in the feedback dialog caused keyboard focus to jump to the close button because the focus-management effect reran when the onClose callback reference changed. | Corrected the focus-management effect to prevent unnecessaru refocusing during parent re-renders and form input. | TC-04 rerun passed. |
+| TC-04 | DEF-07 | Typing in the feedback dialog caused keyboard focus to jump to the close button because the focus-management effect reran when the onClose callback reference changed. | Corrected the focus-management effect to prevent unnecessary refocusing during parent re-renders and form input. | TC-04 rerun passed. |
 | TC-17 | DEF-08 | README setup instructions used `dotnet run` rather than explicitly targeting the API project. | Updated the command to `dotnet run --project .\Checkpoint.Api` and verified the setup on a clean clone. | TC-17 passed upon re-run.
 
 Defect IDs refer to `docs/defect-register.md`.

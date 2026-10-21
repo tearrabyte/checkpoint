@@ -6,7 +6,6 @@ This document records the automated testing approach used for Checkpoint, includ
 ## Test Automation Approach
 Selected manual test cases were automated with MSTest in `backend/Checkpoint.Api.Tests`. Test suitability for automation was deduced by evaluating the stability, repeatability, speed and risk of candidate tests. Tests that require a person, process restart or real browser were specifically kept manual.
 
-Unit tests check the conditional defect
 ## Test Cases Selected for Automation
 | Test Case ID | Description | Rationale for Automation | Automation Type | Automation Status | Automated By |
 | --- | --- | --- | --- | --- | --- |
